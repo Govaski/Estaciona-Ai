@@ -2,9 +2,9 @@
 
 Aplicativo web para gerenciamento de vagas de estacionamento, desenvolvido como projeto final do curso Fullstack Jr. da +PraTi.
 
-![GitHub repo size](https://img.shields.io/github/repo-size/denizemansoni/estaciona-ai)
-![GitHub last commit](https://img.shields.io/github/last-commit/denizemansoni/estaciona-ai)
-![GitHub](https://img.shields.io/github/license/denizemansoni/estaciona-ai)
+![GitHub repo size](https://img.shields.io/github/repo-size/Govaski/Estaciona-Ai)
+![GitHub last commit](https://img.shields.io/github/last-commit/Govaski/Estaciona-Ai)
+![GitHub](https://img.shields.io/github/license/Govaski/Estaciona-Ai)
 
 ## 📸 Preview
 
@@ -21,7 +21,7 @@ Aplicativo web para gerenciamento de vagas de estacionamento, desenvolvido como 
 ## 📦 Instalação
 
 ```bash
-git clone https://github.com/denizemansoni/estaciona-ai.git
+git clone https://github.com/Govaski/Estaciona-Ai.git
 cd estaciona-ai
 npm install
 npm run dev
