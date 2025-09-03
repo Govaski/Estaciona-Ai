@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-export default function MotoristaForm() {
+export default function UsuarioForm() {
   const [formData, setFormData] = useState({
     nome: '',
     cpf: '',
-    cnh: '',
+    email: '',
     telefone: ''
   });
 
@@ -15,17 +15,17 @@ export default function MotoristaForm() {
   const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-    const response = await fetch('http://localhost:3000/api/motoristas', {
+    const response = await fetch('http://localhost:3000/api/usuarios', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
     });
 
     if (response.ok) {
-      alert('Motorista cadastrado com sucesso!');
-      setFormData({ nome: '', cpf: '', cnh: '', telefone: '' });
+      alert('Usuário cadastrado com sucesso!');
+      setFormData({ nome: '', cpf: '', email: '', telefone: '' });
     } else {
-      alert('Erro ao cadastrar motorista.');
+      alert('Erro ao cadastrar usuário.');
     }
   } catch (error) {
     console.error('Erro na requisição:', error);
@@ -35,13 +35,13 @@ export default function MotoristaForm() {
 
   return (
     <div className="form-section">
-      <h2>Cadastro Motorista</h2>
+      <h2>Cadastro Usuário</h2>
       <form onSubmit={handleSubmit}>
         <input name="nome" placeholder="Nome completo" onChange={handleChange} />
         <input name="cpf" placeholder="CPF" onChange={handleChange} />
-        <input name="cnh" placeholder="CNH" onChange={handleChange} />
+        <input name="email" placeholder="E-mail" onChange={handleChange} />
         <input name="telefone" placeholder="Telefone" onChange={handleChange} />
-        <button type="submit">Cadastrar Motorista</button>
+        <button type="submit">Cadastrar Usuário</button>
       </form>
     </div>
   );
