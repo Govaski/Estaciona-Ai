@@ -21,3 +21,21 @@ A aplicação é dividida em dois perfis principais de usuário:
 - **Java:** Linguagem de programação robusta e escalável.
 - **Spring Boot:** Framework para o desenvolvimento da API REST.
 - **Banco de Dados:** Para o armazenamento dos dados (usuários, vagas, reservas).
+
+
+## Como rodar o projeto
+
+- Clone o repositório e instale as dependências:
+
+```bash
+git clone https://github.com/Govaski/Estaciona-Ai.git
+
+cd estaciona-ai
+npm install
+npm run dev
+```
+
+
+📌 Status do Projeto
+
+🚧 Em desenvolvimento
