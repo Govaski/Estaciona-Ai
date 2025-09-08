@@ -29,9 +29,17 @@ A aplicação é dividida em dois perfis principais de usuário:
 
 ```bash
 git clone https://github.com/Govaski/Estaciona-Ai.git
+```
 
+```bash
 cd estaciona-ai
+```
+
+```bash
 npm install
+```
+
+```bash
 npm run dev
 ```
 
