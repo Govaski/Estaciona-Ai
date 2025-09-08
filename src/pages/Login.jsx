@@ -3,19 +3,38 @@ import { Box, Button, TextField, Typography, styled, keyframes, Grid, Link as Mu
 import { Link as RouterLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 
+
 const fadeInUp = keyframes`
   from { opacity: 0; transform: translateY(40px); }
   to { opacity: 1; transform: translateY(0); }
 `;
 
-const Container = styled(Box)({
+
+const MainContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   minHeight: "100vh",
-  background: `linear-gradient(135deg, #1a472a, #2b580c)`,
-  padding: "20px",
-});
+  padding: '20px',
+
+  background: 'linear-gradient(to right, black 50%, #1a472a 50%)',
+  
+
+  [theme.breakpoints.down('md')]: {
+    background: 'linear-gradient(to bottom, black 50%, #1a472a 50%)',
+  },
+}));
+
+
+const FormsWrapper = styled(Grid)(({ theme }) => ({
+  maxWidth: "1000px",
+  width: "100%",
+
+  [theme.breakpoints.up('md')]: {
+    justifyContent: "space-between",
+  },
+}));
+
 
 const Card = styled(Box)({
   background: "#ffffff",
@@ -26,7 +45,6 @@ const Card = styled(Box)({
   flexDirection: "column",
   gap: "20px",
   animation: `${fadeInUp} 0.8s ease forwards`,
-  zIndex: 1,
 });
 
 const Logo = styled("img")({
@@ -58,104 +76,83 @@ const StyledButton = styled(Button)({
   },
 });
 
+
+const LoginCard = ({ title, description, logoAlt, linkCadastro, linkText, toLogin }) => (
+  <Card>
+    <Box display="flex" flexDirection="column" alignItems="center">
+      <Logo src={logo} alt={logoAlt} />
+      <Typography variant="h5" fontWeight="bold" color="#333" sx={{ mb: 1 }}>
+        {title}
+      </Typography>
+      <Typography variant="body2" color="#666" textAlign="center">
+        {description}
+      </Typography>
+    </Box>
+    <StyledTextField label="Email" type="email" fullWidth />
+    <StyledTextField label="Senha" type="password" fullWidth />
+    
+    <StyledButton
+      variant="contained"
+      fullWidth
+      component={RouterLink}
+      to={toLogin}
+    >
+      Entrar
+    </StyledButton>
+    
+    <Typography variant="body2" align="center" sx={{ mt: 1 }}>
+      <MuiLink
+        component={RouterLink}
+        to="/esqueci-a-senha"
+        sx={{ textDecoration: "none", fontWeight: "bold", color: "#1a472a" }}
+      >
+        Esqueceu sua senha?
+      </MuiLink>
+    </Typography>
+    
+    <Typography variant="body2" align="center" sx={{ mt: 1 }}>
+      <MuiLink
+        component={RouterLink}
+        to={linkCadastro}
+        sx={{ textDecoration: "none", fontWeight: "bold", color: "#1a472a" }}
+      >
+        {linkText}
+      </MuiLink>
+    </Typography>
+  </Card>
+);
+
+
 function Login() {
   return (
-    <Container sx={{ px: { xs: 2, md: 0 } }}>
-      <Grid
-        container
-        spacing={5}
-        justifyContent="center"
-        sx={{ py: { xs: 4, md: 0 }, px: { xs: 2, md: 0 } }}
-      >
+    <MainContainer>
+      <FormsWrapper container spacing={5} justifyContent="center" alignItems="center">
 
-        <Grid item xs={12} md={6} sx={{ mx: "auto" }}>
-          <Card>
-            <Box display="flex" flexDirection="column" alignItems="center">
-              <Logo src={logo} alt="Logo Motorista" />
-              <Typography variant="h5" fontWeight="bold" color="#333" sx={{ mb: 1 }}>
-                Sou Motorista
-              </Typography>
-              <Typography variant="body2" color="#666" textAlign="center">
-                Acesse sua conta para gerenciar suas reservas.
-              </Typography>
-            </Box>
-            <StyledTextField label="Email" type="email" fullWidth />
-            <StyledTextField label="Senha" type="password" fullWidth />
-
-            <StyledButton
-              variant="contained"
-              fullWidth
-              component={RouterLink}
-              to="/motorista"
-            >
-              Entrar
-            </StyledButton>
-            <Typography variant="body2" align="center" sx={{ mt: 1 }}>
-              <MuiLink
-                component={RouterLink}
-                to="/esqueci-a-senha"
-                sx={{ textDecoration: "none", fontWeight: "bold", color: "#1a472a" }}
-              >
-                Esqueceu sua senha?
-              </MuiLink>
-            </Typography>
-            <Typography variant="body2" align="center" sx={{ mt: 1 }}>
-              <MuiLink
-                component={RouterLink}
-                to="/cadastro"
-                sx={{ textDecoration: "none", fontWeight: "bold", color: "#1a472a" }}
-              >
-                Cadastre-se como motorista.
-              </MuiLink>
-            </Typography>
-          </Card>
-        </Grid>
-
-
-        <Grid item xs={12} md={6} sx={{ mx: "auto" }}>
-          <Card>
-            <Box display="flex" flexDirection="column" alignItems="center">
-              <Logo src={logo} alt="Logo Estabelecimento" />
-              <Typography variant="h5" fontWeight="bold" color="#333" sx={{ mb: 1 }}>
-                Sou Estabelecimento
-              </Typography>
-              <Typography variant="body2" color="#666" textAlign="center">
-                Acesse para gerenciar suas vagas e reservas.
-              </Typography>
-            </Box>
-            <StyledTextField label="Email" type="text" fullWidth />
-            <StyledTextField label="Senha" type="password" fullWidth />
+        <Grid item xs={12} md={6}>
+          <LoginCard
+            title="Sou Motorista"
+            description="Acesse sua conta para gerenciar suas reservas."
+            logoAlt="Logo Motorista"
+            toLogin="/motorista"
+            linkCadastro="/cadastro-motorista"
+            linkText="Cadastre-se como motorista."
             
-            <StyledButton
-              variant="contained"
-              fullWidth
-              component={RouterLink}
-              to="/estabelecimento"
-            >
-              Entrar
-            </StyledButton>
-            <Typography variant="body2" align="center" sx={{ mt: 1 }}>
-              <MuiLink
-                component={RouterLink}
-                to="/esqueci-a-senha"
-                sx={{ textDecoration: "none", fontWeight: "bold", color: "#1a472a" }}
-              >
-                Esqueceu sua senha?
-              </MuiLink>
-            </Typography>
-            <Typography variant="body2" align="center" sx={{ mt: 1 }}>
-              <MuiLink
-                component={RouterLink}
-                to="/cadastro"
-                sx={{ textDecoration: "none", fontWeight: "bold", color: "#1a472a" }}
-              >                
-                Cadastre seu estabelecimento.
-              </MuiLink>
-            </Typography>
-          </Card>
+          />
         </Grid>
-      </Grid>
-    </Container>
+
+
+        <Grid item xs={12} md={6}>
+          <LoginCard
+            title="Sou Estabelecimento"
+            description="Acesse para gerenciar suas vagas e reservas."
+            logoAlt="Logo Estabelecimento"
+            toLogin="/estabelecimento"
+            linkCadastro="/cadastro-estabelecimento"
+            linkText="Cadastre seu estabelecimento."
+          />
+        </Grid>
+      </FormsWrapper>
+    </MainContainer>
   );
 }
 
