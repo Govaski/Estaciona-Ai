@@ -1,9 +1,6 @@
 package com.estacionaai.backend.controller;
 
-import com.estacionaai.backend.vaga.Vaga;
-import com.estacionaai.backend.vaga.VagaCreateDTO;
-import com.estacionaai.backend.vaga.VagaRepository;
-import com.estacionaai.backend.vaga.VagaResponseDTO;
+import com.estacionaai.backend.vaga.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +33,16 @@ public class VagaController {
     @DeleteMapping("delete/{id}")
     public void delete(@PathVariable UUID id) {
         repository.deleteById(id);
+    }
+
+    @PutMapping("update")
+    public void update(@RequestBody VagaUpdateDTO data) {
+        Vaga vaga = repository.getReferenceById(data.id());
+        vaga.setStatus(data.status());
+        vaga.setTipoVaga(data.tipoVaga());
+        vaga.setTitle(data.title());
+        vaga.setTipoVeiculo(data.tipoVeiculo());
+        repository.save(vaga);
     }
 
 }
