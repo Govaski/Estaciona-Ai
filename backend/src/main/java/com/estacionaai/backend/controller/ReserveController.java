@@ -1,11 +1,9 @@
 package com.estacionaai.backend.controller;
 
-import com.estacionaai.backend.reserve.Reserve;
-import com.estacionaai.backend.reserve.ReserveCreateDTO;
-import com.estacionaai.backend.reserve.ReserveRepository;
-import com.estacionaai.backend.reserve.StatusReserve;
+import com.estacionaai.backend.reserve.*;
 import com.estacionaai.backend.user.UserRepository;
 import com.estacionaai.backend.vaga.VagaRepository;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,9 +34,9 @@ public class ReserveController {
         return repository.findAll();
     }
 
-    @GetMapping("getById/{id}")
-    public Reserve getById(@RequestParam UUID id){
-        return repository.getReferenceById(id);
+    @GetMapping("getById")
+    public ReserveResponseDTO getById(@RequestParam(name = "id", required = true) UUID id){
+        return new ReserveResponseDTO(repository.getReferenceById(id));
     }
 
 }

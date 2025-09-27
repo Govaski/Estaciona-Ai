@@ -1,6 +1,7 @@
 package com.estacionaai.backend.controller;
 
 import com.estacionaai.backend.vaga.*;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +20,8 @@ public class VagaController {
         return repository.findAll();
     }
 
-    @GetMapping("getById/{id}")
-    public VagaResponseDTO getById(@PathVariable UUID id) {
+    @GetMapping("getById")
+    public VagaResponseDTO getById(@RequestParam(name = "id", required = true) UUID id) {
         return new VagaResponseDTO(repository.getReferenceById(id));
     }
 
@@ -30,8 +31,8 @@ public class VagaController {
         repository.save(vaga);
     }
 
-    @DeleteMapping("delete/{id}")
-    public void delete(@PathVariable UUID id) {
+    @DeleteMapping("delete")
+    public void delete(@RequestParam(name = "id", required = true) UUID id) {
         repository.deleteById(id);
     }
 

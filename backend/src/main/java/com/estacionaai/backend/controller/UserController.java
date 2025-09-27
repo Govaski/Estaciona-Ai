@@ -27,13 +27,13 @@ public class UserController {
         repository.save(user);
     }
 
-    @GetMapping("getById/{id}")
-    public UserResponseDTO getById(@PathVariable UUID id) {
+    @GetMapping("getById")
+    public UserResponseDTO getById(@RequestParam(name = "id", required = true) UUID id) {
         return new UserResponseDTO(repository.getReferenceById(id));
     }
 
-    @DeleteMapping("delete/{id}")
-    public void delete(@PathVariable UUID id) {
+    @DeleteMapping("delete")
+    public void delete(@RequestParam(name = "id", required = true) UUID id) {
         repository.deleteById(id);
     }
 }
