@@ -21,12 +21,6 @@ public class UserController {
         return repository.findAll().stream().map(UserResponseDTO::new).toList();
     }
 
-    @PostMapping("create")
-    public void create(@RequestBody UserCreateDTO data) {
-        User user = new User(data);
-        repository.save(user);
-    }
-
     @GetMapping("getById")
     public UserResponseDTO getById(@RequestParam(name = "id", required = true) UUID id) {
         return new UserResponseDTO(repository.getReferenceById(id));
