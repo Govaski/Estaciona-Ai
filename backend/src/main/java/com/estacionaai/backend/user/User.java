@@ -4,6 +4,7 @@ import com.estacionaai.backend.auth.LoginUserDTO;
 import com.estacionaai.backend.auth.RoleName;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.UUID;
@@ -30,13 +31,6 @@ public class User {
     @NonNull
     @Enumerated(EnumType.STRING)
     private RoleName role;
-
-    public User(UserCreateDTO userCreateDTO) {
-        this.fullName = userCreateDTO.fullName();
-        this.email = userCreateDTO.email();
-        this.role = userCreateDTO.role();
-        this.password = userCreateDTO.password();
-    }
 
     public boolean isLoginCorrect(LoginUserDTO loginUserDTO, BCryptPasswordEncoder bCryptPasswordEncoder) {
         return bCryptPasswordEncoder.matches(loginUserDTO.password(), this.password);

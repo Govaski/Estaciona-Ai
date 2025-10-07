@@ -1,8 +1,6 @@
 package com.estacionaai.backend.controller;
 
 import com.estacionaai.backend.auth.LoginUserDTO;
-import com.estacionaai.backend.configuration.UserDetailsServiceImpl;
-import com.estacionaai.backend.service.JwtService;
 import com.estacionaai.backend.user.User;
 import com.estacionaai.backend.user.UserCreateDTO;
 import com.estacionaai.backend.user.UserRepository;
@@ -32,7 +30,7 @@ public class AuthController {
 
     private final JwtEncoder jwtEncoder;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public AuthController(JwtEncoder jwtEncoder, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.jwtEncoder = jwtEncoder;
@@ -56,14 +54,25 @@ public class AuthController {
                 .issuedAt(now)
                 .build();
 
-        var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-
-        return "OK\n"+jwtValue;
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
-//    @PostMapping("/register")
-//    public User Register(@RequestBody UserCreateDTO userCreateDTO) {
-//
-//    }
+    @PostMapping("/register")
+    public User Register(@RequestBody UserCreateDTO userCreateDTO) throws Exception {
+        if(userRepository.findByEmail(userCreateDTO.email()).isEmpty()) {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            User user = new User();
+
+            user.setFullName(userCreateDTO.fullName());
+            user.setEmail(userCreateDTO.email());
+            user.setRole(userCreateDTO.role());
+            user.setPassword(encoder.encode(userCreateDTO.password()));
+
+            userRepository.save(user);
+            return user;
+        } else {
+            throw new Exception("User email already exists");
+        }
+    }
 
 }
