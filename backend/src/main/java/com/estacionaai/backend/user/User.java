@@ -1,38 +1,59 @@
 package com.estacionaai.backend.user;
 
-import com.estacionaai.backend.auth.LoginUserDTO;
-import com.estacionaai.backend.auth.RoleName;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.UUID;
+import java.time.Instant;
+import java.util.*;
 
-@Table(name = "users")
-@Entity(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "username")
+})
+@Entity
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @NotBlank
+    @Size(max = 128)
+    private String name;
+
     @NonNull
-    private String fullName;
-    @NonNull
-    private String email;
-    @NonNull
+    @Email
+    private String username;
+
+    @NotBlank
+    @Size(min = 60, max = 128)
     private String password;
 
-    @NonNull
-    @Enumerated(EnumType.STRING)
-    private RoleName role;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    private Set<String> roles = new HashSet<>();
 
-    public boolean isLoginCorrect(LoginUserDTO loginUserDTO, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        return bCryptPasswordEncoder.matches(loginUserDTO.password(), this.password);
+    private Instant createdAt;
+    private Instant updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+
+        if(roles == null || roles.isEmpty()) {
+            roles = new HashSet<>();
+            roles.add("USER");
+        }
     }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = Instant.now();
+    }
+
 }

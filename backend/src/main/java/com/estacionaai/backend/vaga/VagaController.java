@@ -1,19 +1,24 @@
-package com.estacionaai.backend.controller;
+package com.estacionaai.backend.vaga;
 
-import com.estacionaai.backend.vaga.*;
-import jakarta.websocket.server.PathParam;
+import com.estacionaai.backend.user.User;
+import com.estacionaai.backend.user.UserRepository;
+import com.estacionaai.backend.vaga.dto.VagaCreateDTO;
+import com.estacionaai.backend.vaga.dto.VagaResponseDTO;
+import com.estacionaai.backend.vaga.dto.VagaUpdateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/vaga")
 public class VagaController {
     @Autowired
     private VagaRepository repository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("getAll")
     public List<Vaga> getAll() {
@@ -28,6 +33,8 @@ public class VagaController {
     @PostMapping("create")
     public void create(@RequestBody VagaCreateDTO data){
         Vaga vaga = new Vaga(data);
+        User user = userRepository.getReferenceById(data.owner());
+        vaga.setOwner(user);
         repository.save(vaga);
     }
 
@@ -36,14 +43,9 @@ public class VagaController {
         repository.deleteById(id);
     }
 
-    @PutMapping("update")
-    public void update(@RequestBody VagaUpdateDTO data) {
-        Vaga vaga = repository.getReferenceById(data.id());
-        vaga.setStatus(data.status());
-        vaga.setTipoVaga(data.tipoVaga());
-        vaga.setTitle(data.title());
-        vaga.setTipoVeiculo(data.tipoVeiculo());
-        repository.save(vaga);
-    }
+//    @PutMapping("update")
+//    public ResponseEntity<String> update(@RequestBody VagaUpdateDTO data, @RequestHeader("Authorization") String authorizationHeader) {
+//
+//    }
 
 }

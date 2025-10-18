@@ -1,5 +1,7 @@
-package com.estacionaai.backend.reserve;
+package com.estacionaai.backend.reserve.dto;
 
+import com.estacionaai.backend.reserve.Reserve;
+import com.estacionaai.backend.reserve.StatusReserve;
 import com.estacionaai.backend.user.User;
 import com.estacionaai.backend.vaga.Vaga;
 
