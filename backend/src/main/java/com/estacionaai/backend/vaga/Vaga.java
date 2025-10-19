@@ -1,9 +1,10 @@
 package com.estacionaai.backend.vaga;
 
+import com.estacionaai.backend.user.User;
+import com.estacionaai.backend.vaga.dto.VagaCreateDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Table(name = "vagas")
@@ -17,6 +18,11 @@ public class Vaga {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @NonNull
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private User owner;
 
     @NonNull
     private String title;
@@ -41,6 +47,3 @@ public class Vaga {
     }
 }
 
-enum TipoVaga {NORMAL, IDOSO, PCD, GESTANTE}
-enum TipoVeiculo {CARRO, MOTO}
-enum VagaStatus {DISPONIVEL, OCUPADA, RESERVADA}

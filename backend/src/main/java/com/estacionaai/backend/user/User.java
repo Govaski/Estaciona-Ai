@@ -1,39 +1,59 @@
 package com.estacionaai.backend.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
 
-import java.util.UUID;
+import java.time.Instant;
+import java.util.*;
 
-@Table(name = "users")
-@Entity(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "username")
+})
+@Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @NotBlank
+    @Size(max = 128)
+    private String name;
+
     @NonNull
-    private String fullName;
-    @NonNull
-    private String email;
-    @NonNull
+    @Email
+    private String username;
+
+    @NotBlank
+    @Size(min = 60, max = 128)
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    @NonNull
-    private UserTypeEnum userType;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    private Set<String> roles = new HashSet<>();
 
-    public User(UserCreateDTO data) {
-        this.fullName = data.fullName();
-        this.email = data.email();
-        this.password = data.password();
-        this.userType = data.userType();
+    private Instant createdAt;
+    private Instant updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+
+        if(roles == null || roles.isEmpty()) {
+            roles = new HashSet<>();
+            roles.add("USER");
+        }
     }
-}
 
-enum UserTypeEnum {MOTORISTA, ESTABELECIMENTO}
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = Instant.now();
+    }
+
+}

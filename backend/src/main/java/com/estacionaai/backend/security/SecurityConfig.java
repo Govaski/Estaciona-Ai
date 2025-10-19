@@ -1,0 +1,85 @@
+package com.estacionaai.backend.security;
+
+import com.estacionaai.backend.user.UserRepository;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+
+@Configuration
+@EnableMethodSecurity
+public class SecurityConfig {
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final UserRepository userRepository;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserRepository userRepository) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.userRepository = userRepository;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return  new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> userRepository.findByUsername(username)
+                .map(u -> (UserDetails) org.springframework.security.core.userdetails.User
+                        .withUsername(u.getUsername())
+                        .password(u.getPassword())
+                        .roles(u.getRoles().toArray(String[]::new))
+                        .accountLocked(false)
+                        .disabled(false)
+                        .build())
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder);
+        return authProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/vaga").hasRole("PARK")
+                        .requestMatchers(HttpMethod.PUT, "/api/vaga/{id}").hasRole("PARK")
+                        .requestMatchers(HttpMethod.DELETE, "/api/vaga/{id}").hasRole("PARK")
+                        .anyRequest().authenticated()
+                )
+                .authenticationProvider(authenticationProvider(userDetailsService(), passwordEncoder()))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+}
