@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("api/auth")
@@ -44,6 +46,13 @@ public class AuthController {
         user.setName(request.getName());
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        if (request.getRole() != null) {
+            Set<String> roles = new HashSet<>();
+            roles.add("USER");
+            roles.add(request.getRole().toString());
+            user.setRoles(roles);
+        }
 
         userRepository.save(user);
 

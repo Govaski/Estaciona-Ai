@@ -1,3 +1,3 @@
 package com.estacionaai.backend.reserve;
 
-public enum StatusReserve {RESERVADO, FINALIZADO}
+public enum StatusReserve {RESERVADO, FINALIZADO, PENDENTE}

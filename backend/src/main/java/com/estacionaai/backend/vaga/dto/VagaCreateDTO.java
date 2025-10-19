@@ -7,5 +7,5 @@ import com.estacionaai.backend.vaga.VagaStatus;
 
 import java.util.UUID;
 
-public record VagaCreateDTO(UUID owner, String title, VagaStatus status, TipoVaga tipoVaga, TipoVeiculo tipoVeiculo) {
+public record VagaCreateDTO(String title, VagaStatus status, TipoVaga tipoVaga, TipoVeiculo tipoVeiculo) {
 }
