@@ -1,9 +1,9 @@
-package com.estacionaai.backend.controller;
+package com.estacionaai.backend.reserve;
 
-import com.estacionaai.backend.reserve.*;
+import com.estacionaai.backend.reserve.dto.ReserveCreateDTO;
+import com.estacionaai.backend.reserve.dto.ReserveResponseDTO;
 import com.estacionaai.backend.user.UserRepository;
 import com.estacionaai.backend.vaga.VagaRepository;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
