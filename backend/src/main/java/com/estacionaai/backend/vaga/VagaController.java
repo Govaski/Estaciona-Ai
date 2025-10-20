@@ -57,7 +57,8 @@ public class VagaController {
     @DeleteMapping("{id}")
     public HttpStatus delete(HttpServletRequest request, @PathVariable UUID id) {
         User user = userService.getUserByRequest(request);
-        if(user.getId().equals(id)) {
+        Vaga vaga = repository.getReferenceById(id);
+        if(user.getId().equals(vaga.getOwner().getId())) {
             repository.deleteById(id);
             return HttpStatus.OK;
         } else {
