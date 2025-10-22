@@ -8,6 +8,7 @@ import com.estacionaai.backend.user.UserService;
 import com.estacionaai.backend.vaga.Vaga;
 import com.estacionaai.backend.vaga.VagaRepository;
 import com.estacionaai.backend.vaga.enums.VagaStatus;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/reservas")
+@Tag(name = "Reserva API")
 public class ReserveController {
     @Autowired
     private ReserveRepository repository;

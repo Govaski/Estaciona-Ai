@@ -6,6 +6,7 @@ import com.estacionaai.backend.auth.dto.RegisterRequest;
 import com.estacionaai.backend.security.JwtService;
 import com.estacionaai.backend.user.User;
 import com.estacionaai.backend.user.UserRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("api/auth")
+@Tag(name = "Auth API")
 public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

@@ -2,6 +2,7 @@ package com.estacionaai.backend.user;
 
 import com.estacionaai.backend.security.JwtService;
 import com.estacionaai.backend.user.dto.UserResponseDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/users")
+@Tag(name="Users API")
 public class UserController {
     @Autowired
     private UserRepository userRepository;

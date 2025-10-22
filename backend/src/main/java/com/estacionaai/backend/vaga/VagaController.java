@@ -6,6 +6,7 @@ import com.estacionaai.backend.user.UserRepository;
 import com.estacionaai.backend.user.UserService;
 import com.estacionaai.backend.vaga.dto.VagaCreateDTO;
 import com.estacionaai.backend.vaga.dto.VagaResponseDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +19,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("api/vaga")
+@Tag(name = "Vaga API")
 public class VagaController {
     @Autowired
     private VagaRepository repository;

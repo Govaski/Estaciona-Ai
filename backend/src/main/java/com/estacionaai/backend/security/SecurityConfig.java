@@ -71,6 +71,8 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
+                        .requestMatchers("/docs").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/vaga").hasRole("PARK")
                         .requestMatchers(HttpMethod.PUT, "/api/vaga/{id}").hasRole("PARK")
                         .requestMatchers(HttpMethod.DELETE, "/api/vaga/{id}").hasRole("PARK")
