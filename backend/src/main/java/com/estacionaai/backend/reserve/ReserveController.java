@@ -8,6 +8,7 @@ import com.estacionaai.backend.user.UserService;
 import com.estacionaai.backend.vaga.Vaga;
 import com.estacionaai.backend.vaga.VagaRepository;
 import com.estacionaai.backend.vaga.enums.VagaStatus;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class ReserveController {
     @Autowired
     private UserService userService;
 
+    @Operation(description = "Requisita uma vaga para ser reservada para um usuario. É preciso estar logado como DRIVER e " +
+            "Apenas aceita requisições de vagas com status DISPONIVEL e define o status da reserva como PENDENTE")
     @PostMapping("request")
     public HttpStatus create(@RequestBody ReserveCreateDTO data) {
         if (vagaRepository.getReferenceById(data.vaga_fk()).getStatus() == VagaStatus.DISPONIVEL) {
@@ -45,6 +48,8 @@ public class ReserveController {
     }
 
     @PutMapping("{id}/accept")
+    @Operation(description = "Aceita o pedido de reserva. É preciso estar logado como PARK e apenas aceita vaga com status DISPONIVEL e reserva PENDENTE. " +
+            "Define vaga status para RESERVADA e reserva status para RESERVADO")
     public HttpStatus accept(HttpServletRequest request, @PathVariable UUID id) {
         User user = userService.getUserByRequest(request);
         Reserve reserve = repository.getReferenceById(id);
