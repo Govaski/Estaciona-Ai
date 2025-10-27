@@ -1,7 +1,6 @@
-import React from 'react';
-import { Box, Button, TextField, Typography, styled, keyframes, Grid, Link as MuiLink } from "@mui/material";
+import { Box, Button, Grid, Link as MuiLink, TextField, Typography, keyframes, styled } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import logo from "../assets/logo.png"; 
+import logo from "../assets/logo.png";
 
 
 const fadeInUp = keyframes`
@@ -159,7 +158,7 @@ function Login() {
       description="Acesse sua conta para gerenciar suas reservas."
       logoAlt="Logo Motorista"
       toLogin="/motorista"
-      linkCadastro="/cadastro-motorista"
+      linkCadastro="/cadastro"
       linkText="Cadastre-se como motorista"
       
      />
@@ -172,7 +171,7 @@ function Login() {
       description="Acesse para gerenciar suas vagas e reservas."
       logoAlt="Logo Estabelecimento"
       toLogin="/estabelecimento"
-      linkCadastro="/cadastro-estabelecimento"
+      linkCadastro="/cadastro"
       linkText="Cadastre seu estabelecimento"
      />
     </Grid>
