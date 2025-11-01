@@ -10,7 +10,7 @@ const options = {
       description: 'Descrição da sua API aqui',
     },
   },
-  apis: ['./routes/*.js'], // Altere esse caminho se suas rotas estiverem em outro lugar
+  apis: ['./routes/*.js'],
 };
 
 const specs = swaggerJsdoc(options);
