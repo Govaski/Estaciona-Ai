@@ -8,9 +8,7 @@ import axios from 'axios';
 
 const COLOR_PRIMARY = '#1a472a'; 
 const COLOR_ALERT = '#ffc107'; 
-const COLOR_SECONDARY = '#ff9800';
-
-
+const COLOR_SECONDARY = '#ff6f00'; 
 
 const StyledAppBar = styled(AppBar)({
   backgroundColor: COLOR_PRIMARY,
@@ -28,7 +26,8 @@ const SectionTitle = styled(Typography)({
   marginBottom: '20px',
 });
 
-const API_BASE_URL = 'http://localhost:8080';
+
+const API_BASE_URL = 'http://localhost:8080/api';
 
 function Estabelecimento() {
   const [vagas, setVagas] = useState([]);
@@ -49,10 +48,8 @@ function Estabelecimento() {
       const todasVagas = vagasResponse.data;
       setVagas(todasVagas);
 
-
       const disponiveis = todasVagas.filter(v => v.status === 'DISPONIVEL').length;
       const ocupadas = todasVagas.filter(v => v.status === 'OCUPADA').length;
-
       const pendentes = todasVagas.filter(v => v.status === 'PENDENTE_APROVACAO').length; 
       
       setDashboardData({
@@ -70,9 +67,8 @@ function Estabelecimento() {
     }
   }, []);
 
- 
-  const handleApproval = async (vagaId, status) => {
 
+  const handleApproval = async (vagaId, status) => {
     const endpoint = `${API_BASE_URL}/vagas/${vagaId}/${status === 'APROVAR' ? 'aprovar' : 'rejeitar'}`;
     const action = status === 'APROVAR' ? 'Aprovação' : 'Rejeição';
 
@@ -139,7 +135,7 @@ function Estabelecimento() {
               </CardContent>
             </StyledCard>
           </Grid>
-          {/* Card Vagas Ocupadas */}
+
           <Grid item xs={12} md={4}>
             <StyledCard>
               <CardContent>
@@ -163,7 +159,7 @@ function Estabelecimento() {
 
 
         {dashboardData.pendentes > 0 && (
-          <Box sx={{ p: 3, backgroundColor: COLOR_ALERT + '33', borderRadius: '15px', mb: 4 }}>
+          <Box sx={{ p: 3, backgroundColor: COLOR_ALERT + '33', borderRadius: '15px', mb: 4 }}> 
             <SectionTitle variant="h5" sx={{ color: COLOR_SECONDARY }}>🚨 Vagas para Aprovar</SectionTitle>
             <Typography variant="body2" sx={{ mb: 2 }}>{dashboardData.pendentes} vaga(s) aguardando sua validação.</Typography>
 
