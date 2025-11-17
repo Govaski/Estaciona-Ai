@@ -44,7 +44,7 @@ function Estabelecimento() {
     setLoading(true);
     setError(null);
     try {
-      const vagasResponse = await axios.get(`${API_BASE_URL}/vagas`); 
+      const vagasResponse = await axios.get(`${API_BASE_URL}/vaga/getAll`); 
       const todasVagas = vagasResponse.data;
       setVagas(todasVagas);
 
@@ -69,7 +69,7 @@ function Estabelecimento() {
 
 
   const handleApproval = async (vagaId, status) => {
-    const endpoint = `${API_BASE_URL}/vagas/${vagaId}/${status === 'APROVAR' ? 'aprovar' : 'rejeitar'}`;
+    const endpoint = `${API_BASE_URL}/vaga/${vagaId}/${status === 'APROVAR' ? 'aprovar' : 'rejeitar'}`;
     const action = status === 'APROVAR' ? 'Aprovação' : 'Rejeição';
 
     try {
@@ -90,7 +90,7 @@ function Estabelecimento() {
     };
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/vagas`, novaVaga);
+      const response = await axios.post(`${API_BASE_URL}/vaga`, novaVaga);
       alert(`Vaga ${response.data.identificador} adicionada com sucesso!`);
       fetchDashboardData(); 
     } catch (err) {
