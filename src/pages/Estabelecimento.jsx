@@ -2,12 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { AppBar, Toolbar, Typography, Box, Container, Grid, Card, CardContent, Button, List, ListItem, ListItemText, Divider, CircularProgress, Alert } from '@mui/material';
 import { styled } from '@mui/system';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'; // Novo ícone
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'; // Novo ícone
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'; 
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'; 
 import axios from 'axios'; 
 
 const COLOR_PRIMARY = '#1a472a'; 
-const COLOR_ALERT = '#ffc107'; // Amarelo para status Pendente
+const COLOR_ALERT = '#ffc107'; 
 const COLOR_SECONDARY = '#ff9800';
 
 
@@ -38,7 +38,7 @@ function Estabelecimento() {
       total: 0,
       disponiveis: 0,
       ocupadas: 0,
-      pendentes: 0, // Novo status adicionado
+      pendentes: 0, 
   });
 
   const fetchDashboardData = useCallback(async () => {
@@ -49,17 +49,17 @@ function Estabelecimento() {
       const todasVagas = vagasResponse.data;
       setVagas(todasVagas);
 
-      // --- Cálculo de Dados do Dashboard ---
+
       const disponiveis = todasVagas.filter(v => v.status === 'DISPONIVEL').length;
       const ocupadas = todasVagas.filter(v => v.status === 'OCUPADA').length;
-      // FILTRANDO VAGAS PENDENTES
+
       const pendentes = todasVagas.filter(v => v.status === 'PENDENTE_APROVACAO').length; 
       
       setDashboardData({
           total: todasVagas.length,
           disponiveis: disponiveis,
           ocupadas: ocupadas,
-          pendentes: pendentes, // Atualiza o estado
+          pendentes: pendentes, 
       });
 
     } catch (err) {
@@ -70,17 +70,16 @@ function Estabelecimento() {
     }
   }, []);
 
-  // --- NOVA FUNÇÃO: GERENCIAR APROVAÇÃO ---
+ 
   const handleApproval = async (vagaId, status) => {
-    // Rota que deve ser implementada no backend para aprovar/rejeitar
-    // EX: PUT /vagas/{id}/aprovar ou PUT /vagas/{id}/rejeitar
+
     const endpoint = `${API_BASE_URL}/vagas/${vagaId}/${status === 'APROVAR' ? 'aprovar' : 'rejeitar'}`;
     const action = status === 'APROVAR' ? 'Aprovação' : 'Rejeição';
 
     try {
         await axios.put(endpoint);
         alert(`Vaga ID ${vagaId}: ${action} realizada com sucesso.`);
-        fetchDashboardData(); // Recarrega a lista
+        fetchDashboardData(); 
     } catch (err) {
         console.error(`Erro na ${action} da vaga ${vagaId}:`, err);
         alert(`Erro ao realizar ${action}. Verifique a rota e o console.`);
@@ -109,12 +108,12 @@ function Estabelecimento() {
     fetchDashboardData();
   }, [fetchDashboardData]);
 
-  // Filtra as listas para as duas seções
+
   const vagasPendentes = vagas.filter(v => v.status === 'PENDENTE_APROVACAO');
   const vagasAtivas = vagas.filter(v => v.status !== 'PENDENTE_APROVACAO');
 
 
-  // --- Renderização ---
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <StyledAppBar position="static">
@@ -129,9 +128,9 @@ function Estabelecimento() {
 
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         
-        {/* Indicadores do Dashboard */}
+
         <Grid container spacing={3} sx={{ mb: 4 }}>
-          {/* Card Vagas Disponíveis */}
+
           <Grid item xs={12} md={4}> 
             <StyledCard>
               <CardContent>
@@ -149,7 +148,7 @@ function Estabelecimento() {
               </CardContent>
             </StyledCard>
           </Grid>
-          {/* Card Vagas Pendentes de Aprovação */}
+
           <Grid item xs={12} md={4}>
             <StyledCard sx={{ borderLeft: `5px solid ${COLOR_ALERT}` }}>
               <CardContent>
@@ -162,9 +161,9 @@ function Estabelecimento() {
 
         <Divider sx={{ my: 4 }} /> 
 
-        {/* --- SEÇÃO DE VAGAS PENDENTES --- */}
+
         {dashboardData.pendentes > 0 && (
-          <Box sx={{ p: 3, backgroundColor: COLOR_ALERT + '33', borderRadius: '15px', mb: 4 }}> {/* Fundo levemente amarelado */}
+          <Box sx={{ p: 3, backgroundColor: COLOR_ALERT + '33', borderRadius: '15px', mb: 4 }}>
             <SectionTitle variant="h5" sx={{ color: COLOR_SECONDARY }}>🚨 Vagas para Aprovar</SectionTitle>
             <Typography variant="body2" sx={{ mb: 2 }}>{dashboardData.pendentes} vaga(s) aguardando sua validação.</Typography>
 
@@ -201,7 +200,7 @@ function Estabelecimento() {
           </Box>
         )}
 
-        {/* --- SEÇÃO DE GERENCIAMENTO DE VAGAS ATIVAS --- */}
+
         <Box sx={{ p: 3, backgroundColor: '#f5f5f5', borderRadius: '15px' }}>
           <SectionTitle variant="h5">Gerenciamento de Vagas Ativas</SectionTitle>
           
